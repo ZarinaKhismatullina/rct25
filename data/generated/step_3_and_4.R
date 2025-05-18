@@ -1,3 +1,5 @@
+#Step 3
+
 #Open data file
 orbis_panel_berlin <- readRDS("~/rct25/data/generated/orbis_panel_berlin.rds")
 
@@ -27,3 +29,22 @@ flug_years <- select(flug_data, name_internat, year)
 combined_years <- bind_rows(sis_years, flug_years)
 
 print(combined_years)
+
+#Step 4
+
+# Filter by 2021
+orbis_2021 <- filter(orbis_panel_berlin, postcode == 13353, year == 2021)
+
+# Filter by Total Assets amount and pick top-10
+top_5 <- orbis_2021 %>%
+  arrange(desc(toas)) %>%     
+  slice_head(n = 5) %>%      
+  select(name_internat, toas, shfd, turn) %>%
+  rename('Company Name' = name_internat,
+  'Total Assets' = toas,
+  'Book Value of Equity' = shfd,
+  'Net Sales' = turn
+)
+
+print(top_5)
+
